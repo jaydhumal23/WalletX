@@ -1,12 +1,14 @@
-
-import React, { useEffect } from "react";
+import '@ant-design/v5-patch-for-react-19';
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 import { Form, Input, Button, message } from "antd";
 import axios from "axios";
 
+
 export default function LoginPage() {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     document.title = "Expense Management System - Login";
   }, []);
@@ -17,11 +19,17 @@ export default function LoginPage() {
 
   const onFinish = async (values) => {
     try {
+      setLoading(true)
       const response = await axios.post("/api/v1/users/login", values); // values = { email, password }
       console.log(response.data);
+
+      await new Promise((resolve) => setTimeout(resolve, 600));
       message.success("Login successful!");
+
+      setLoading(false)
       navigate("/home"); // redirect after login
     } catch (err) {
+      setLoading(false)
       console.error(err);
       message.error(err.response?.data?.message || "Login failed");
     }
@@ -100,6 +108,9 @@ export default function LoginPage() {
                   Register
                 </span>
               </p>
+              <div className="ml-45 mt-3">
+                {loading && <Spinner />}
+              </div>
             </div>
           </div>
         </div>

@@ -8,6 +8,8 @@ const registerController = async (req, res) => {
             password,
 
         })
+        res.clearCookie("username");
+
         res.status(200).json({
             success: true,
             user
@@ -28,6 +30,7 @@ const loginController = async (req, res) => {
         if (!user) {
             return res.status(400).send("User not Found");
         }
+        res.cookie("username", "jay")
         res.status(200).json({
             success: true,
             user
