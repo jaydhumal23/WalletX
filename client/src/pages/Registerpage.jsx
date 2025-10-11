@@ -4,13 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import Spinner from "../components/Spinner";
 import axios from "axios";
+import Cookies from "js-cookie"
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    Cookies.remove("token");
     document.title = "Expense Management System - Register";
-  }, []);
+    if (Cookies.get("username")) {
+      navigate("/home")
+    }
+  }, [navigate]);
 
   const gotoLogin = () => {
     navigate("/login");

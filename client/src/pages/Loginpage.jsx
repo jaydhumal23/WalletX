@@ -4,14 +4,18 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { Form, Input, Button, message } from "antd";
 import axios from "axios";
-
+import Cookies from "js-cookie"
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   useEffect(() => {
+    Cookies.remove("token");
     document.title = "Expense Management System - Login";
-  }, []);
+    if (Cookies.get("token")) {
+      navigate("/home")
+    }
+  }, [navigate]);
 
   const gotoRegister = () => {
     navigate("/register");
@@ -20,8 +24,8 @@ export default function LoginPage() {
   const onFinish = async (values) => {
     try {
       setLoading(true)
-      const response = await axios.post("/api/v1/users/login", values); // values = { email, password }
-      console.log(response.data);
+      const { data } = await axios.post("/api/v1/users/login", values); // values = { email, password }
+      console.log(data.user.name, data.user._id, data.user.email);
 
       await new Promise((resolve) => setTimeout(resolve, 600));
       message.success("Login successful!");
