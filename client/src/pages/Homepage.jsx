@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/layout/Layout'
-import { Modal, Form, Input, Select, message } from 'antd'
+import { Modal, Form, Input, Select, message, Table, DatePicker } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import moment from "moment"
 const Homepage = () => {
   const [showModal, setShowModal] = useState(false)
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -10,10 +11,34 @@ const Homepage = () => {
   const [form] = Form.useForm();
   const [datas, setDatas] = useState("")
   const [transaction, setTransaction] = useState([])
-  const navigate = useNavigate(); 
-  const columns=[
+  const navigate = useNavigate();
+  const [frequency, setFrequency] = useState("7")
+  const { RangePicker } = DatePicker;
+  const columns = [
     {
+      "title": "Date",
+      "dataIndex": "date",
+      render: (text) => <span>{moment(text).format('YYYY-MM-DD')}</span>,
 
+    },
+    {
+      "title": "Amount - ₹",
+      "dataIndex": "amount"
+    },
+    {
+      "title": "Type",
+      "dataIndex": "type"
+    },
+    {
+      "title": "Category",
+      "dataIndex": "category"
+    },
+    {
+      "title": "Refrence",
+      "dataIndex": "refrence"
+    },
+    {
+      "title": "Actions"
     }
   ]
   useEffect(() => {
@@ -25,10 +50,13 @@ const Homepage = () => {
 
 
   }, []);
+  useEffect(() => {
+    getAllTransaction(datas)
+  }, [showModal, frequency])
 
   async function getAllTransaction(id) {
     try {
-      const { data } = await axios.post("/api/v1/transactions/get-transactions", { userId: id })
+      const { data } = await axios.post("/api/v1/transactions/get-transactions", { userId: id, frequency })
       console.log(data)
       setTransaction(data)
     } catch (error) {
@@ -49,7 +77,7 @@ const Homepage = () => {
     }
 
   }
- 
+
 
 
   const handleOk = async (values) => {
@@ -95,14 +123,40 @@ const Homepage = () => {
   };
   return (
     <Layout>
-      <div className='bg-gray-100/70 backdrop-blur-2xl mx-10 rounded-xl min-h-[80%] p-5'>
-        <div className="filters flex justify-between  items-center" >
-          <div className=' text-md'>range filters</div>
-          <div><button className='text-white bg-blue-400 px-2 py-1 rounded-md cursor-pointer hover:bg-blue-500 transition-colors duration-30' onClick={() => { setShowModal(true) }}>Add New</button></div>
-        </div></div>
+      <div className='bg-gray-100/20 backdrop-blur-xl mx-6 rounded-xl min-h-[80%] p-5'>
+        <div className="filters flex justify-between  items-center px-3" >
+          <div className=' text-md flex flex-col justify-center items-center'>
 
-      <div className="content"></div>
+            <Select className='w-full' value={frequency} onChange={(values) => setFrequency(values)}>
+              <Select.Option value="7" >Last 1 Week</Select.Option>
+              <Select.Option value="30" >Last 1 Month</Select.Option>
+              <Select.Option value="180" >Last 6 Months</Select.Option>
+              <Select.Option value="365" >Last 1 Year</Select.Option>
+              <Select.Option value="730" >Last 2 Years</Select.Option>
+              <Select.Option value="custom" >Custom</Select.Option>
+            </Select>
+          </div>
+          <div><h6 className='text-white bg-blue-400 px-2 py-1 rounded-md cursor-pointer hover:bg-blue-500 transition-colors duration-30' onClick={() => { setShowModal(true) }}>Add New</h6></div>
+        </div>
+
+        <div className="content mt-2">
+          <Table columns={columns} dataSource={transaction}
+            style={{
+
+              backgroundColor: 'rgba(243, 244, 246, 0.3)',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '12px',
+              padding: '10px',
+            }} />
+        </div>
+      </div>
       <Modal
+        style={{
+          backgroundColor: 'rgba(243, 244, 246, 0.3)',
+          backdropFilter: 'blur(12px)',
+          borderRadius: '12px',
+          padding: '10px',
+        }}
         title="Add Transaction"
         open={showModal}
         onOk={() => { form.submit() }}

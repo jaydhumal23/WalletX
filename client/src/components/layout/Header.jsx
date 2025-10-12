@@ -36,17 +36,16 @@ const Header = () => {
       console.log("logout err")
 
     }
-    
+
   }
   return (
-    <nav className='backdrop-blur-md bg-gray-800/10'>
+    <nav className='backdrop-blur-md bg-gray-800/10 mb-5'>
       <div className='flex items-center px-2 gap-10 py-2    justify-between '>
         <div className='flex justify-center items-center gap-10'>
-          <a href='#' className='text-2xl text-amber-100 font-' ><i>Expense Management System</i> </a >
-          <a className='text-gray-200 text-xl cursor-pointer hover:text-gray-50 transition-colors duration-30' onClick={gotoHome} >Home</a>
+          <a onClick={gotoHome} href='' className='text-2xl text-gray-100 hover:text-gray-50 transition-colors duration-30 font-semibold ' ><i>Expense Management System</i> </a >
         </div>
         <div className='flex justify-center items-center gap-3 select-none'>
-          <div className='text-gray-700 text-md font-mono cursor-default '>{username}</div>
+          <div className='text-gray-700 text-[15px] font-mono cursor-default hover:text-[17px] transition-all  duration-[.5s] hover:text-gray-800 hover:font-semibold-[500]'>{username}</div>
           <button onClick={logout} className='cursor-pointer '>   <img className="h-8" src="https://jays3aws.s3.ap-south-1.amazonaws.com/assets/log-out.png" />
 
           </button>
