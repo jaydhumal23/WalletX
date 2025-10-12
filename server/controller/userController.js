@@ -71,7 +71,7 @@ const loginController = async (req, res) => {
 const logincheckController = async (req, res) => {
     try {
         const user = jwt.verify(req.cookies.token, jwtpass)
-        const details = await userModel.findOne({email: user.email });
+        const details = await userModel.findOne({ email: user.email });
         res.status(200).json({
             success: true,
             user,
