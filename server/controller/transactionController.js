@@ -3,12 +3,11 @@ const moment = require("moment")
 const getAllTransactions = async (req, res) => {
     try {
         const { userId, frequency, selectedDate, selectedType } = req.body;
-        console.log(frequency)
-        console.log(selectedType)
+
         const transaction = await transactionModel.find({
             userId,
             ...(frequency !== "custom" ? { date: { $gt: moment().subtract(Number(frequency), "d").toDate() } } : { date: { $gte: selectedDate[0], $lte: selectedDate[1] } })
-            , ...(selectedType !== "all" && { type:selectedType })
+            , ...(selectedType !== "all" && { type: selectedType })
         }).sort({ date: -1 });
         res.status(200).json(
             transaction
@@ -19,6 +18,28 @@ const getAllTransactions = async (req, res) => {
 
     }
 
+}
+const editTransaction = async (req, res) => {
+    const { transactionId } = req.body;
+    try {
+        const update = await transactionModel.findOneAndUpdate({ _id: transactionId }, req.body.payload)
+        res.status(200).send("Edit Successfully!")
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+const deleteTransaction = async (req, res) => {
+    try {
+        const transactionId = req.params.id;
+        console.log(transactionId)
+        const remove = await transactionModel.findByIdAndDelete({ _id: transactionId })
+        res.status(200).send("Transaxtion Deleted ")
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+
+    }
 }
 const createTransaction = async (req, res) => {
     try {
@@ -33,5 +54,5 @@ const createTransaction = async (req, res) => {
 }
 
 module.exports = {
-    getAllTransactions, createTransaction
+    getAllTransactions, createTransaction, editTransaction, deleteTransaction
 }

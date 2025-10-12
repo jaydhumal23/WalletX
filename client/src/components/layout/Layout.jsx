@@ -9,7 +9,8 @@ const Layout = ({ children }) => {
       <div className='content mt-2'>
         {children}
       </div>
-      <Footer />
+      <div className='absolute bottom-0 left-0 w-full'><Footer /></div>
+
     </div>
 
   )

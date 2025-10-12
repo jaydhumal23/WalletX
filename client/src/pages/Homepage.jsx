@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
 import { Modal, Form, Input, Select, message, Table, DatePicker } from "antd";
 import { useNavigate } from "react-router-dom";
-import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
+import { UnorderedListOutlined, AreaChartOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 const { RangePicker } = DatePicker;
 import axios from "axios";
@@ -16,6 +16,7 @@ const Homepage = () => {
   const [showModal, setShowModal] = useState(false);
   const [frequency, setFrequency] = useState("7");
   const [modalText, setModalText] = useState("");
+  const [editable, setEditable] = useState(null)
   const [datas, setDatas] = useState("");
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -43,8 +44,33 @@ const Homepage = () => {
     },
     {
       title: "Actions",
+      render: ((text, record) => {
+        return <div className="cursor-pointer text-xl">
+          <EditOutlined onClick={() => {
+            setEditable(record),
+              form.setFieldValue({
+                ...record
+              })
+
+            setShowModal(true)
+
+          }} />
+          <DeleteOutlined className="ml-4" onClick={() => handleDelete(record)} />
+        </div>
+      })
     },
   ];
+
+  useEffect(() => {
+    if (editable) {
+      form.setFieldsValue({
+        ...editable,
+        date: editable.date ? moment(editable.date).format("YYYY-MM-DD") : undefined,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [editable, form]);
   useEffect(() => {
     document.title = "Home";
 
@@ -52,7 +78,7 @@ const Homepage = () => {
   }, []);
   useEffect(() => {
     getAllTransaction(datas);
-  }, [showModal, frequency, selectedDate, selectedType, viewState]);
+  }, [showModal, frequency, selectedDate, selectedType, viewState, editable]);
 
   async function getAllTransaction(id) {
     try {
@@ -60,7 +86,7 @@ const Homepage = () => {
         "/api/v1/transactions/get-transactions",
         { userId: id, frequency, selectedDate, selectedType }
       );
-      console.log(data);
+
       setTransaction(data);
     } catch (error) {
       console.log(error);
@@ -72,11 +98,25 @@ const Homepage = () => {
       const detail = data.details._id;
 
       setDatas(detail);
-      console.log(detail);
+
       await getAllTransaction(detail);
     } catch (err) {
       console.log(err);
     }
+  }
+  const handleDelete = async (record) => {
+    try {
+      const remove = await axios.delete(`/api/v1/transactions/delete-transaction/${record._id}`)
+      message.success("Transaction Deleted Successfully !!")
+      await getAllTransaction(datas);
+
+    } catch (error) {
+      setConfirmLoading(false)
+      console.log(error)
+      message.error("unable to Delete")
+
+    }
+
   }
 
   const handleOk = async (values) => {
@@ -85,14 +125,27 @@ const Homepage = () => {
 
     setTimeout(async () => {
       try {
-        console.log(datas);
-        const create = await axios.post(
-          "/api/v1/transactions/create-transaction",
-          { ...values, userId: datas }
-        );
-        await getAllTransaction(datas);
-        message.success("Transaction Created Successfully !");
+        if (editable) {
+          const edit = await axios.put("/api/v1/transactions/edit-transaction", {
+            payload: {
+              ...values, userId: datas
+            }, transactionId: editable._id
+          })
+          message.success("Transaction Updated Successfully !");
+          form.resetFields();
+
+
+        }
+        else {
+          const create = await axios.post(
+            "/api/v1/transactions/create-transaction",
+            { ...values, userId: datas }
+          );
+          await getAllTransaction(datas);
+          message.success("Transaction Created Successfully !");
+        }
         setShowModal(false);
+        setEditable(null)
         form.resetFields();
       } catch (error) {
         console.log(error);
@@ -172,8 +225,8 @@ const Homepage = () => {
           {viewState === "table" ? <Table columns={columns}
             dataSource={transaction}
             style={{
-              backgroundColor: "rgba(243, 244, 246, 0.7)",
-              backdropFilter: "blur(12px)",
+              backgroundColor: "rgba(249, 250, 251, 0.4)",
+              backdropFilter: "blur(24px)",
               borderRadius: "12px",
               padding: "10px",
             }}
@@ -183,12 +236,12 @@ const Homepage = () => {
       </div>
       <Modal
         style={{
-          backgroundColor: "rgba(243, 244, 246, 0.3)",
-          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(249, 250, 251, 0.4)",
+          backdropFilter: "blur(24px)",
           borderRadius: "12px",
           padding: "10px",
         }}
-        title="Add Transaction"
+        title={editable ? "Edit  Transaction" : "Add Transaction"}
         open={showModal}
         onOk={() => {
           form.submit();
@@ -206,6 +259,7 @@ const Homepage = () => {
           onFinishFailed={handleFinishFailed}
           name="useForm"
           form={form}
+
         >
           <Form.Item
             label="Amount - ₹"
