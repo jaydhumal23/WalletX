@@ -23,7 +23,8 @@ export function ProtectedRoutes(prop) {
     return prop.children
   }
   else {
-    <Navigate to="/login" replace />
+
+    return <Navigate to="/login" replace />
   }
 }
 export default App

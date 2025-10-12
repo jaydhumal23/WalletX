@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 
 const transactionSchema = new mongoose.Schema({
-    userId:{
-        type:String,
-        required:true,
+    userId: {
+        type: String,
+        required: true,
     },
     amount: {
         type: Number,
@@ -27,7 +27,7 @@ const transactionSchema = new mongoose.Schema({
         required: [true, "description required"]
     },
     date: {
-        type: String,
+        type: Date,
 
     }
 }, { timestamps: true })
