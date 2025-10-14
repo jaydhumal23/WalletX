@@ -10,8 +10,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   useEffect(() => {
-    Cookies.remove("token");
-    document.title = "Expense Management System - Login";
+     document.title = "Expense Management System - Login";
     if (Cookies.get("token")) {
       navigate("/home")
     }

@@ -38,8 +38,7 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log(email, password, jwtpass)
-        const user = await userModel.findOne({ email });
+         const user = await userModel.findOne({ email });
 
         if (!user) {
             return res.status(400).send("User not Found");

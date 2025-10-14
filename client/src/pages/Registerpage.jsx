@@ -10,7 +10,6 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    Cookies.remove("token");
     document.title = "Expense Management System - Register";
     if (Cookies.get("username")) {
       navigate("/home")
