@@ -18,6 +18,7 @@ const Homepage = () => {
   const [modalText, setModalText] = useState("");
   const [editable, setEditable] = useState(null)
   const [datas, setDatas] = useState("");
+  const [startup, setStartup] = useState(false)
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const columns = [
@@ -75,10 +76,11 @@ const Homepage = () => {
     document.title = "Home";
 
     logincheck();
+    setStartup(true)
   }, []);
   useEffect(() => {
     getAllTransaction(datas);
-  }, [showModal, frequency, selectedDate, selectedType, viewState, editable]);
+  }, [showModal, frequency, selectedDate, selectedType, viewState, editable, startup]);
 
   async function getAllTransaction(id) {
     try {
