@@ -215,6 +215,7 @@ const Homepage = () => {
             <h6
               className="text-white bg-blue-400 px-2 py-1 text-[18px] rounded-md cursor-pointer hover:bg-blue-500 transition-colors duration-30"
               onClick={() => {
+                setEditable(null)
                 setShowModal(true);
               }}
             >
