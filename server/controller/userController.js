@@ -38,29 +38,40 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
     try {
         const { email, password } = req.body;
-         const user = await userModel.findOne({ email });
+        const user = await userModel.findOne({ email });
 
         if (!user) {
             return res.status(400).send("User not Found");
+
+
         }
-        await bcrypt.compare(password, user.password, (err, result) => {
-            if (!result) {
-                console.log("err in allocating token")
+        else {
+            await bcrypt.compare(password, user.password, (err, result) => {
+                if (!result) {
+                    console.log("err in allocating token"
 
-            }
-            const token = jwt.sign({ email: user.email }, jwtpass)
+                    )
+                    return res.status(400).send("Invalid Credentials")
+                }
+                else {
+                    const token = jwt.sign({ email: user.email }, jwtpass)
 
-            res.cookie("token", token);
-            res.status(200).json({
-                success: true,
-                user
+                    res.cookie("token", token);
+                    res.status(200).json({
+                        success: true,
+                        user
+                    })
+                }
+
             })
-        })
+        }
+
 
 
 
     } catch (err) {
         res.status(400).json({
+
             success: false,
             err,
         })
@@ -71,6 +82,9 @@ const logincheckController = async (req, res) => {
     try {
         const user = jwt.verify(req.cookies.token, jwtpass)
         const details = await userModel.findOne({ email: user.email });
+        if (!details) {
+            throw new Error("User not Found");
+        }
         res.status(200).json({
             success: true,
             user,
