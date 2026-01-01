@@ -11,7 +11,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     document.title = "Expense Management System - Register";
-    if (Cookies.get("username")) {
+    if (Cookies.get("token")) {
       navigate("/home")
     }
   }, [navigate]);
@@ -43,22 +43,22 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
+      <div className="w-full max-w-md ">
+        <div className="text-center mb-8 max-md:mb-4">
 
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl max-md:text-[26px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Expense Management System
           </h1>
-          <p className="text-gray-600 mt-2">Create your account to start tracking expenses</p>
+          <p className="text-gray-600 mt-2 max-md:text-[13px]">Create your account to start tracking expenses</p>
         </div>
 
-        <div className="bg-white shadow-xl rounded-lg border-0 px-6 pt-5 pb-4">
-          <div className="space-y-1 mb-6">
-            <h2 className="text-2xl font-semibold text-center">Create Account</h2>
-            <p className="text-center text-gray-600">Enter your details to create your new account</p>
+        <div className="bg-white shadow-xl rounded-lg  border-0 px-6 pt-5 pb-4 max-md:px-3 max-md:pt-2 max-md:pb-2 max-md:rounded-xl">
+          <div className="space-y-1 mb-6 max-md:mb-2">
+            <h2 className="text-2xl font-semibold text-center max-md:text-xl">Create Account</h2>
+            <p className="text-center text-gray-600 max-md:text-[12px]">Enter your details to create your new account</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 max-md:space-y-0.5">
             <Form
               name="registerForm"
               layout="vertical"
@@ -72,7 +72,7 @@ export default function RegisterPage() {
               >
                 <Input
                   placeholder="Enter your full name"
-                  className="w-full h-11 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full h-11 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent "
                 />
               </Form.Item>
 
@@ -115,7 +115,7 @@ export default function RegisterPage() {
               </Form.Item>
             </Form>
 
-            <div className="text-center pt-4">
+            <div className="text-center pt-4 max-md:pt-1">
               <p className="text-sm text-gray-600">
                 Already have an account?{" "}
                 <span
@@ -125,7 +125,7 @@ export default function RegisterPage() {
                   Login
                 </span>
               </p>
-              <div className="ml-43 mt-2">
+              <div className="ml-43 mt-2 text-xl max-md:ml-37">
                 {loading && <Spinner />}
               </div>
 

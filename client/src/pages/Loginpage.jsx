@@ -10,7 +10,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   useEffect(() => {
-     document.title = "Expense Management System - Login";
+    document.title = "Expense Management System - Login";
     if (Cookies.get("token")) {
       navigate("/home")
     }
@@ -45,20 +45,20 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="text-center mb-8 max-md:mb-4">
+          <h1 className="text-4xl max-md:text-[26px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Expense Management System
           </h1>
-          <p className="text-gray-600 mt-2">Welcome back! Please login to your account</p>
+          <p className="text-gray-600 mt-2 max-md:text-[13px]">Welcome back! Please login to your account</p>
         </div>
 
-        <div className="bg-white shadow-xl rounded-lg border-0 px-6 py-8">
-          <div className="space-y-1 mb-6">
-            <h2 className="text-2xl font-semibold text-center">Login</h2>
-            <p className="text-center text-gray-600">Enter your email and password to Login</p>
+        <div className="bg-white shadow-xl rounded-lg border-0 px-6 py-8 max-md:px-3 max-md:pt-2 max-md:pb-2 max-md:rounded-xl">
+          <div className="space-y-1 mb-6 max-md:mb-2">
+            <h2 className="text-2xl font-semibold text-center max-md:text-xl">Login</h2>
+            <p className="text-center text-gray-600 max-md:text-[12px]">Enter your email and password to Login</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 max-md:space-y-0.5">
             <Form
               name="loginForm"
               layout="vertical"
@@ -111,7 +111,9 @@ export default function LoginPage() {
                   Register
                 </span>
               </p>
-              <div className="ml-45 mt-3">
+              <div className="ml-45 mt-3 max-md:ml-37 text-xl">
+
+
                 {loading && <Spinner />}
               </div>
             </div>

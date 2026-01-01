@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/layout/Layout";
 import { Modal, Form, Input, Select, message, Table, DatePicker } from "antd";
-import { useNavigate } from "react-router-dom";
 import { UnorderedListOutlined, AreaChartOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
 const { RangePicker } = DatePicker;
@@ -19,8 +18,7 @@ const Homepage = () => {
   const [editable, setEditable] = useState(null)
   const [datas, setDatas] = useState("");
   const [startup, setStartup] = useState(false)
-  const navigate = useNavigate();
-  const [form] = Form.useForm();
+   const [form] = Form.useForm();
   const columns = [
     {
       title: "Date",
@@ -77,10 +75,10 @@ const Homepage = () => {
 
     logincheck();
     setStartup(true)
-  }, []);
+  }, [startup]);
   useEffect(() => {
     getAllTransaction(datas);
-  }, [showModal, frequency, selectedDate, selectedType, viewState, editable, startup]);
+  }, [showModal, frequency, selectedDate, selectedType, viewState, editable, startup,datas]);
 
   async function getAllTransaction(id) {
     try {
@@ -108,7 +106,7 @@ const Homepage = () => {
   }
   const handleDelete = async (record) => {
     try {
-      const remove = await axios.delete(`/api/v1/transactions/delete-transaction/${record._id}`)
+      await axios.delete(`/api/v1/transactions/delete-transaction/${record._id}`)
       message.success("Transaction Deleted Successfully !!")
       await getAllTransaction(datas);
 
@@ -128,7 +126,7 @@ const Homepage = () => {
     setTimeout(async () => {
       try {
         if (editable) {
-          const edit = await axios.put("/api/v1/transactions/edit-transaction", {
+        await axios.put("/api/v1/transactions/edit-transaction", {
             payload: {
               ...values, userId: datas
             }, transactionId: editable._id
@@ -139,7 +137,7 @@ const Homepage = () => {
 
         }
         else {
-          const create = await axios.post(
+      await axios.post(
             "/api/v1/transactions/create-transaction",
             { ...values, userId: datas }
           );
@@ -147,7 +145,7 @@ const Homepage = () => {
           message.success("Transaction Created Successfully !");
         }
         setShowModal(false);
-        setEditable(null)
+        setEditable(null);
         form.resetFields();
       } catch (error) {
         console.log(error);
@@ -168,9 +166,9 @@ const Homepage = () => {
   };
   return (
     <Layout>
-      <div className="bg-gray-500/20 backdrop-blur-md mx-6 rounded-xl min-h-[80%] p-5">
-        <div className="filters flex justify-between  items-center px-3">
-          <div className=" text-md flex  justify-center items-center gap-1 min-w-31">
+      <div className="bg-gray-500/20 backdrop-blur-md mx-6 rounded-xl min-h-[80%] p-5 max-md:min-h-170 max-sm:text-[10px] max-sm:mx-1 max-sm:p-3">
+        <div className="filters flex justify-between  items-center px-3 max-sm:px-0">
+          <div className=" text-md flex  justify-center items-center gap-1 min-w-31 max-sm:min-w-31 ">
             <Select
               className="w-full"
               value={frequency}
@@ -191,9 +189,9 @@ const Homepage = () => {
               />
             )}
           </div>
-          <div className=" text-md flex  justify-center items-center gap-1 min-w-22">
+          <div className=" text-md flex  justify-center items-center gap-1 min-w-22 max-sm:text-[10px]">
             <Select
-              className="w-full"
+              className="w-full "
               value={selectedType}
               onChange={(values) => setSelectedType(values)}
             >
@@ -202,8 +200,8 @@ const Homepage = () => {
               <Select.Option value="expense">Expense</Select.Option>
             </Select>
           </div>
-          <div className="flex justify-center items-center  gap-2">
-            <div className="flex justify-center items-center gap-2 px-2 py-1 bg-gray-100 rounded-md text-[18px]  cursor-pointer transition-all duration-30">
+          <div className="flex justify-center items-center  gap-2 max-md:gap-2">
+            <div className="flex justify-center items-center gap-2 px-2 py-1 bg-gray-100 rounded-md text-[18px]  cursor-pointer transition-all duration-30 max-sm:text-[15px]">
               <div className={`${viewState === "table" ? "text-black" : "text-gray-300"}`}>
                 <UnorderedListOutlined onClick={() => setViewState("table")} />
               </div>
@@ -213,7 +211,7 @@ const Homepage = () => {
 
             </div>
             <h6
-              className="text-white bg-blue-400 px-2 py-1 text-[18px] rounded-md cursor-pointer hover:bg-blue-500 transition-colors duration-30"
+              className="text-white bg-blue-400 px-2 py-1 text-[18px] rounded-md cursor-pointer hover:bg-blue-500 transition-colors duration-30 max-sm:text-[15px]"
               onClick={() => {
                 setEditable(null)
                 setShowModal(true);
@@ -224,14 +222,17 @@ const Homepage = () => {
           </div>
         </div>
 
-        <div className="content mt-2">
+        <div className="content mt-2 ">
           {viewState === "table" ? <Table columns={columns}
             dataSource={transaction}
+            scroll={{ x: 'max-content' }}
             style={{
               backgroundColor: "rgba(249, 250, 251, 0.4)",
               backdropFilter: "blur(24px)",
               borderRadius: "12px",
               padding: "10px",
+
+
             }}
           /> : <Analytics transaction={transaction} />}
 

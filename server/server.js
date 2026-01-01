@@ -1,5 +1,4 @@
 const express = require("express");
-const morgan = require("morgan");
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
@@ -11,10 +10,10 @@ const userRouter = require("./routes/userRoute");
 const transactionRouter = require("./routes/transactionRoute")
 const PORT = process.env.PORT || 3000;
 const jwtpass = process.env.pass
-
 const app = express();
 
 connectDB()
+
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
