@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser")
 const connectDB = require("./config/connectDB");
 const userRouter = require("./routes/userRoute");
 const transactionRouter = require("./routes/transactionRoute")
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const jwtpass = process.env.pass
 const app = express();
 
@@ -17,7 +17,7 @@ connectDB()
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     credentials: true
 }))
 app.use("/api/v1/users", userRouter)

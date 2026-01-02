@@ -10,7 +10,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   useEffect(() => {
-    document.title = "Expense Management System - Login";
+    document.title = "WalletX - Login";
     if (Cookies.get("token")) {
       navigate("/home")
     }
@@ -34,7 +34,8 @@ export default function LoginPage() {
     } catch (err) {
       setLoading(false)
       console.error(err);
-      message.error(err.response?.data?.message || "Login failed");
+      message.error("Login failed")
+      message.error(err.response?.data);
     }
   };
 
@@ -46,8 +47,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8 max-md:mb-4">
-          <h1 className="text-4xl max-md:text-[26px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Expense Management System
+          <h1 className="text-8xl max-md:text-[26px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <i>WalletX</i>
           </h1>
           <p className="text-gray-600 mt-2 max-md:text-[13px]">Welcome back! Please login to your account</p>
         </div>

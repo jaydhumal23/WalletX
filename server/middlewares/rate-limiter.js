@@ -9,7 +9,7 @@ client.on('error', (err) => console.error('Redis Client Error: '.bgRED, err))
 client.on('connect', () => console.log('Connected to Redis successfully'.bgGreen))
 const generalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 100,
+    limit: 120,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     ipv6Subnet: 56,
@@ -22,7 +22,7 @@ const generalLimiter = rateLimit({
 })
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 30,
+    limit: 50,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     message: "Too many login attempts, please try again after 15 minutes",

@@ -18,7 +18,7 @@ const Homepage = () => {
   const [editable, setEditable] = useState(null)
   const [datas, setDatas] = useState("");
   const [startup, setStartup] = useState(false)
-   const [form] = Form.useForm();
+  const [form] = Form.useForm();
   const columns = [
     {
       title: "Date",
@@ -71,14 +71,14 @@ const Homepage = () => {
     }
   }, [editable, form]);
   useEffect(() => {
-    document.title = "Home";
+    document.title = "WalletX - Home";
 
     logincheck();
     setStartup(true)
   }, [startup]);
   useEffect(() => {
     getAllTransaction(datas);
-  }, [showModal, frequency, selectedDate, selectedType, viewState, editable, startup,datas]);
+  }, [showModal, frequency, selectedDate, selectedType, viewState, editable, startup, datas]);
 
   async function getAllTransaction(id) {
     try {
@@ -126,7 +126,7 @@ const Homepage = () => {
     setTimeout(async () => {
       try {
         if (editable) {
-        await axios.put("/api/v1/transactions/edit-transaction", {
+          await axios.put("/api/v1/transactions/edit-transaction", {
             payload: {
               ...values, userId: datas
             }, transactionId: editable._id
@@ -137,7 +137,7 @@ const Homepage = () => {
 
         }
         else {
-      await axios.post(
+          await axios.post(
             "/api/v1/transactions/create-transaction",
             { ...values, userId: datas }
           );

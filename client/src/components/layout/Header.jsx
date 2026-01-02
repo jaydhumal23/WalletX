@@ -43,7 +43,7 @@ const Header = () => {
     <nav className='backdrop-blur-sm bg-gray-500/20 mb-5 '>
       <div className='flex items-center px-2 gap-10 py-2    justify-between '>
         <div className='flex justify-center items-center gap-10 max-sm:gap-2'>
-          <a onClick={gotoHome} href='' className='text-2xl text-gray-100 hover:text-white transition-colors duration-30 font-semibold  max-sm:text-[16px] ' ><i>Expense Management System</i> </a >
+          <a onClick={gotoHome} href='' className='text-2xl text-gray-100 hover:text-white transition-colors duration-30 font-semibold  max-sm:text-[16px] ' ><i>WalletX</i> </a >
 
         </div>
         <div className='flex justify-center items-center gap-3 select-none'>

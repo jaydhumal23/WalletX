@@ -1,174 +1,131 @@
 import { Progress } from 'antd';
-import React from 'react'
-import { formatINR } from '../utils/formatINR';
+import React from 'react';
+import { formatINR } from '../utils/formatINR'; // Assuming this path exists
+
 const Analytics = ({ transaction }) => {
-    const categories = ["salary", "tip", "project", "food", "movie", "bills", "medical", "fee", "tax"]
+    // 1. Data Processing
+    const categories = ["salary", "tip", "project", "food", "movie", "bills", "medical", "fee", "tax"];
 
     const totalTransaction = transaction.length;
-    const totalIncomeTransaction = transaction.filter(transaction => transaction.type === "income")
-    const totalExpenseTransaction = transaction.filter(transaction => transaction.type === "expense")
+    const totalIncomeTransactions = transaction.filter(t => t.type === "income");
+    const totalExpenseTransactions = transaction.filter(t => t.type === "expense");
 
-    const totalIncomePercent = totalTransaction > 0 ? (totalIncomeTransaction.length / totalTransaction) * 100 : 0;
-    const totalExpensePercent = totalTransaction > 0 ? (totalExpenseTransaction.length / totalTransaction) * 100 : 0;
+    const totalIncomeTurnover = transaction
+        .filter(t => t.type === "income")
+        .reduce((acc, t) => acc + t.amount, 0);
 
-    const totalTurnover = transaction.reduce((acc, transactionData) => acc + transactionData.amount, 0);
-    const totalIncometurnover = transaction.filter(transaction => transaction.type === "income").reduce((acc, transactionData) => acc + transactionData.amount, 0)
-    const totalExpenseturnover = transaction.filter(transaction => transaction.type === "expense").reduce((acc, transactionData) => acc + transactionData.amount, 0)
+    const totalExpenseTurnover = transaction
+        .filter(t => t.type === "expense")
+        .reduce((acc, t) => acc + t.amount, 0);
 
-    const incomeTurnoverPercent = totalTurnover > 0 ? (totalIncometurnover / totalTurnover) * 100 : 0;
-    const expenseTurnoverPercent = totalTurnover > 0 ? (totalExpenseturnover / totalTurnover) * 100 : 0;
+    // Net Balance calculation
+    const totalNetBalance = totalIncomeTurnover - totalExpenseTurnover;
 
+    // Percentage for the top overview bar (Income vs Expense ratio)
+    const totalTurnover = totalIncomeTurnover + totalExpenseTurnover;
+    const incomeRatio = totalTurnover > 0 ? (totalIncomeTurnover / totalTurnover) * 100 : 0;
+    const expenseRatio = totalTurnover > 0 ? (totalExpenseTurnover / totalTurnover) * 100 : 0;
 
-    const hasIncome = transaction.some(t => (t.type || "").toString().trim().toLowerCase() === "income");
-    const hasExpense = transaction.some(t => (t.type || "").toString().trim().toLowerCase() === "expense");
     return (
-        <div className='bg-gray-100/30 backdrop-blur-xl  rounded-xl p-5 overflow-hidden max-xl:p-2'>
-            <div className='flex flex-col gap-20 max-xl:gap-2'>
-                <div className='hero1 flex  justify-around  px-5 max-xl:px-2'>
-                    <div className="card1">
-                        <div className='bg-gray-50/40 backdrop-blur-3xl w-fit min-h-120 rounded-xl max-xl:min-h-40'>
-                            <div className='p-5 '>
-                                <h1 className='text-mono text-2xl mb-2 font-bold  text-gray-500 max-xl:text-[10px] max-xl:mb-1'>Total Transactions : {totalTransaction}</h1>
-                                <hr />
-                                <br />
-                                <h2 className='font-mono text-xl text-blue-500 font-semibold max-xl:text-[7px]'>Income<span className='text-gray-500'>  &nbsp;: {totalIncomeTransaction.length}</span></h2>
-                                <h2 className='font-mono text-xl text-red-500 font-semibold max-xl:text-[7px]'>Expense<span className='text-gray-500'> : {totalExpenseTransaction.length}</span></h2>
-                                <div className='mt-5   flex items-center gap-2 max-xl:hidden '>
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"blue"} size={250} percent={totalIncomePercent.toFixed(0)} />
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"red"} size={250} percent={totalExpensePercent.toFixed(0)} />
-                                </div>
-                                <div className='mt-5   flex items-center gap-2 max-xl:mt-1 xl:hidden'>
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"blue"} size={50} percent={totalIncomePercent.toFixed(0)} />
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"red"} size={50} percent={totalExpensePercent.toFixed(0)} />
-                                </div>
+        <div className='p-4 md:p-6 select-none'>
+            {/* --- SECTION 1: OVERVIEW CARDS --- */}
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
 
-
-                            </div>
-                            <div>
-
-                            </div>
-                        </div>
+                {/* Card 1: Net Balance (The most important number) */}
+                <div className='bg-gray-100/60 p-6 rounded-2xl shadow-xl  flex flex-col justify-between h-40'>
+                    <div>
+                        <h2 className='text-gray-500 font-medium'>Net Balance</h2>
+                        <h1 className={`text-3xl font-bold mt-2 ${totalNetBalance >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                            {formatINR(totalNetBalance)}
+                        </h1>
                     </div>
-                    <div className="card2 ">
-                        <div className='bg-gray-50/40 backdrop-blur-3xl  w-fit min-h-120 rounded-xl max-xl:min-h-40 '>
-                            <div className='p-5 '>
-                                <h1 className='text-mono text-2xl mb-2 font-bold  text-gray-500 max-xl:text-[10px] max-xl:mb-1'>Total TurnOver: {formatINR(totalTurnover)} </h1>
-                                <hr />
-                                <br />
-                                <h2 className='font-mono text-xl text-blue-500 font-semibold max-xl:text-[7px]'>Income<span className='text-gray-500'> &nbsp;: {formatINR(totalIncometurnover)} </span></h2>
-                                <h2 className='font-mono text-xl text-red-500 font-semibold max-xl:text-[7px]'>Expense<span className='text-gray-500'> : {formatINR(totalExpenseturnover)} </span></h2>
-                                <div className='mt-5   flex items-center gap-2 max-xl:hidden '>
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"blue"} size={250} percent={incomeTurnoverPercent.toFixed(0)} />
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"red"} size={250} percent={expenseTurnoverPercent.toFixed(0)} />
-                                </div>
-                                <div className='mt-5   flex items-center gap-2  max-xl:mt-1 xl:hidden'>
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"blue"} size={50} percent={incomeTurnoverPercent.toFixed(0)} />
-                                    <Progress strokeLinecap="butt" type='circle' strokeColor={"red"} size={50} percent={expenseTurnoverPercent.toFixed(0)} />
-                                </div>
-
-                            </div>
-                            <div>
-
-                            </div>
-                        </div>
+                    <div className='text-xs text-gray-400'>
+                        Total Transactions: {totalTransaction}
                     </div>
                 </div>
-                <div className='hero2 flex  justify-around items-center px-5 max-xl:p-1'>
-                    {hasIncome && (<div className="card3">
-                        <div className='bg-gray-50/40 backdrop-blur-3xl w-fit min-h-120 rounded-xl max-xl:min-h-40  '>
-                            <div className='p-5 max-xl:p-2 '>
-                                <h1 className='text-mono text-2xl mb-2 font-bold  text-gray-500 max-xl:text-[10px] max-xl:mb-1'>Categories : Income </h1>
-                                <hr />
-                                <br />
 
-                                <div className='mt-5   flex flex-col  gap-2 max-xl:hidden'>
-                                    {categories.map((category) => {
-                                        const amount = transaction.filter((transactionData) => transactionData.type === "income" && transactionData.category === category).reduce((acc, transactionData) => acc + Number(transactionData.amount), 0);
-                                        return (
-                                            amount > 0 && (
-                                                <div className='mb-2 bg-gray-200 rounded-xl px-2 py-1'>
-                                                    <h2 className='text-black mb-2 '>{category}</h2>
-                                                    <Progress percent={((amount / totalTurnover) * 100).toFixed(0)} size={[480, 10]} />
-                                                </div>
-                                            )
+                {/* Card 2: Income Details */}
+                <div className='bg-gray-100/60 p-6 rounded-2xl shadow-xl  flex flex-col justify-between h-40 backdrop-blur-xl'>
+                    <div>
+                        <h2 className='text-gray-500 font-medium'>Total Income</h2>
+                        <h1 className='text-3xl font-bold text-green-600 mt-2'>{formatINR(totalIncomeTurnover)}</h1>
+                    </div>
+                    <div className='w-full'>
+                        <p className='text-xs text-gray-400 mb-1'>{totalIncomeTransactions.length} Transactions</p>
+                        <Progress percent={incomeRatio} showInfo={false} strokeColor="green" size="small" />
+                    </div>
+                </div>
 
-                                        )
-                                    })}
-                                </div>
-                                <div className='mt-5   flex flex-col  gap-2  max-xl:mt-1 xl:hidden'>
-                                    {categories.map((category) => {
-                                        const amount = transaction.filter((transactionData) => transactionData.type === "income" && transactionData.category === category).reduce((acc, transactionData) => acc + Number(transactionData.amount), 0);
-                                        return (
-                                            amount > 0 && (
-                                                <div className='mb-2 bg-gray-200 rounded-xl px-2 py-1 max-xl:px-1 max-xl:mb-1'>
-                                                    <h2 className='text-black mb-2 max-xl:mb-1 max-xl:text-[12px]'>{category}</h2>
-                                                    <Progress percent={((amount / totalTurnover) * 100).toFixed(0)} size={[130, 4]} />
-                                                </div>
-                                            )
-
-                                        )
-                                    })}
-                                </div>
-
-
-                            </div>
-                            <div>
-
-                            </div>
-                        </div>
-                    </div>)}
-
-                    {hasExpense && (<div className="card4 ">
-                        <div className='bg-gray-50/40 backdrop-blur-3xl  w-fit min-h-120 rounded-xl  max-xl:min-h-40  '>
-                            <div className='p-5 max-xl:p-2'>
-                                <h1 className='text-mono text-2xl mb-2 font-bold  text-gray-500 max-xl:text-[10px] max-xl:mb-1'>Categories : Expense </h1>
-                                <hr />
-                                <br />
-
-
-                                <div className='mt-5   flex flex-col  gap-2 max-xl:hidden'>
-                                    {categories.map((category) => {
-                                        const amount = transaction.filter((transactionData) => transactionData.type === "expense" && transactionData.category === category).reduce((acc, transactionData) => acc + Number(transactionData.amount), 0);
-                                        return (
-                                            amount > 0 && (
-                                                <div className='mb-2 bg-gray-200 rounded-xl px-2 py-1 '>
-                                                    <h2 className='text-black mb-2 '>{category}</h2>
-                                                    <Progress percent={((amount / totalTurnover) * 100).toFixed(0)} size={[480, 10]} />
-                                                </div>
-
-                                            )
-
-                                        )
-                                    })}
-                                </div>
-                                <div className='mt-5   flex flex-col  gap-2 max-xl:mt-1 xl:hidden'>
-                                    {categories.map((category) => {
-                                        const amount = transaction.filter((transactionData) => transactionData.type === "expense" && transactionData.category === category).reduce((acc, transactionData) => acc + Number(transactionData.amount), 0);
-                                        return (
-                                            amount > 0 && (
-                                                <div className='mb-2 bg-gray-200 rounded-xl px-2 py-1 max-xl:px-1 max-xl:mb-1'>
-                                                    <h2 className='text-black mb-2 max-xl:mb-1 max-xl:text-[12px]'>{category}</h2>
-                                                    <Progress percent={((amount / totalTurnover) * 100).toFixed(0)} size={[130, 4]} />
-                                                </div>
-
-                                            )
-
-                                        )
-                                    })}
-                                </div>
-
-                            </div>
-                            <div>
-
-                            </div>
-                        </div>
-                    </div>)}
-
+                {/* Card 3: Expense Details */}
+                <div className='bg-gray-100/60 p-6 rounded-2xl shadow-xl  flex flex-col justify-between h-40'>
+                    <div>
+                        <h2 className='text-gray-500 font-medium'>Total Expense</h2>
+                        <h1 className='text-3xl font-bold text-red-500 mt-2'>{formatINR(totalExpenseTurnover)}</h1>
+                    </div>
+                    <div className='w-full'>
+                        <p className='text-xs text-gray-400 mb-1'>{totalExpenseTransactions.length} Transactions</p>
+                        <Progress percent={expenseRatio} showInfo={false} strokeColor="red" size="small" />
+                    </div>
                 </div>
             </div>
 
+            {/* --- SECTION 2: CATEGORY BREAKDOWNS --- */}
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+
+                {/* Income Breakdown */}
+                <div className='bg-gray-100/60 p-6 rounded-2xl shadow-xl '>
+                    <h2 className='text-lg font-bold text-gray-700 mb-4'>Income Sources</h2>
+                    <div className='flex flex-col gap-4'>
+                        {categories.map((category) => {
+                            const amount = transaction
+                                .filter(t => t.type === "income" && t.category === category)
+                                .reduce((acc, t) => acc + Number(t.amount), 0);
+
+                            // FIX: Calculate % relative to Total Income, not Turnover
+                            const percent = totalIncomeTurnover > 0 ? (amount / totalIncomeTurnover) * 100 : 0;
+
+                            return amount > 0 && (
+                                <div key={category} className='w-full'>
+                                    <div className='flex justify-between items-center mb-1'>
+                                        <span className='capitalize text-gray-600 text-sm font-medium'>{category}</span>
+                                        <span className='text-gray-500 text-sm'>{percent.toFixed(0)}%</span>
+                                    </div>
+                                    <Progress percent={percent} showInfo={false} strokeColor="green" />
+                                </div>
+                            );
+                        })}
+                        {totalIncomeTurnover === 0 && <p className='text-gray-400 text-sm text-center py-4'>No Data</p>}
+                    </div>
+                </div>
+
+                {/* Expense Breakdown */}
+                <div className='bg-gray-100/60 p-6 rounded-2xl shadow-xl '>
+                    <h2 className='text-lg font-bold text-gray-700 mb-4'>Expense Breakdown</h2>
+                    <div className='flex flex-col gap-4'>
+                        {categories.map((category) => {
+                            const amount = transaction
+                                .filter(t => t.type === "expense" && t.category === category)
+                                .reduce((acc, t) => acc + Number(t.amount), 0);
+
+                            // FIX: Calculate % relative to Total Expense
+                            const percent = totalExpenseTurnover > 0 ? (amount / totalExpenseTurnover) * 100 : 0;
+
+                            return amount > 0 && (
+                                <div key={category} className='w-full'>
+                                    <div className='flex justify-between items-center mb-1'>
+                                        <span className='capitalize text-gray-600 text-sm font-medium'>{category}</span>
+                                        <span className='text-gray-500 text-sm'>{percent.toFixed(0)}%</span>
+                                    </div>
+                                    <Progress percent={percent} showInfo={false} strokeColor="red" />
+                                </div>
+                            );
+                        })}
+                        {totalExpenseTurnover === 0 && <p className='text-gray-400 text-sm text-center py-4'>No Data</p>}
+                    </div>
+                </div>
+            </div>
         </div>
-    )
+    );
 }
 
-export default Analytics
+export default Analytics;

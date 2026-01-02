@@ -10,7 +10,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    document.title = "Expense Management System - Register";
+    document.title = "WalletX - Register";
     if (Cookies.get("token")) {
       navigate("/home")
     }
@@ -33,7 +33,9 @@ export default function RegisterPage() {
     } catch (err) {
       setLoading(false)
       console.error(err);
-      message.error(err.response?.data?.message || "Registration failed");
+      message.error("Registration failed")
+      message.error(err.response?.data);
+
     }
   };
 
@@ -46,8 +48,8 @@ export default function RegisterPage() {
       <div className="w-full max-w-md ">
         <div className="text-center mb-8 max-md:mb-4">
 
-          <h1 className="text-4xl max-md:text-[26px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Expense Management System
+          <h1 className="text-8xl max-md:text-[26px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <i>WalletX</i>
           </h1>
           <p className="text-gray-600 mt-2 max-md:text-[13px]">Create your account to start tracking expenses</p>
         </div>
