@@ -10,7 +10,7 @@ export default defineConfig({
       "/api": {
         target: "https://walletx-jay.duckdns.org/",
         changeOrigin: true,
-        secure: false,
+        secure: true,
         rewrite: (path) => path // keep /api/v1/users/register intact
       }
     }

@@ -17,7 +17,7 @@ connectDB()
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173,https://walletx-1jay.vercel.app",
+    origin: ["http://localhost:5173", "https://walletx-1jay.vercel.app"],
     credentials: true
 }))
 app.use("/api/v1/users", userRouter)
