@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // forward requests starting with /api to the backend
       "/api": {
-        target: "http://localhost:8000",
+        target: "https://walletx-jay.duckdns.org/",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path // keep /api/v1/users/register intact
