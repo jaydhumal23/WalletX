@@ -17,7 +17,7 @@ const registerController = async (req, res) => {
                     password: hash,
 
                 })
-                console.log(user)
+                console.log("Register\n", user)
                 res.clearCookie("token");
 
                 res.status(200).json({
@@ -42,7 +42,7 @@ const loginController = async (req, res) => {
         const email = req.body.email.toLowerCase();
 
         const user = await userModel.findOne({ email });
-        console.log(user)
+        console.log("LOGIN\n", user)
 
         if (!user) {
             return res.status(400).send("User not Found");
