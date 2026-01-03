@@ -1,10 +1,10 @@
 # WalletX
 
-**WalletX** is a production-grade, full-stack financial management platform designed to track income, expenses, and transaction history in real-time.
+**WalletX** is a production-grade financial platform for tracking of income and expenses.
 
-Going beyond a standard MERN application by utilizing a custom cloud infrastructure. The backend is containerized with **Docker**, orchestrated on **AWS EC2**, managed via **Nginx** reverse proxy, and secured with **SSL/TLS encryption (HTTPS)** using Certbot.
+It goes beyond standard MERN apps by utilizing **AWS EC2** and **Docker** infrastructure with **Nginx** and **SSL/TLS**. Security is reinforced using **JWT Authentication** and **Bcrypt** password hashing.
 
-<a href="https://walletx-1jay.vercel.app" target="_blank">Live</a>
+[Live](https://walletx-1jay.vercel.app)
 
 ### **Frontend**
 
@@ -17,14 +17,14 @@ Going beyond a standard MERN application by utilizing a custom cloud infrastruct
 
 - **Runtime:** Node.js & Express.js
 - **Database:** MongoDB
-- **Security:** Express-Rate-Limit, CORS
+- **Auth & Security:** JWT, Bcrypt, Express-Rate-Limit, CORS
 - **API Style:** RESTful Architecture
 
 ### **DevOps & Cloud Infrastructure**
 
 - **Cloud Provider:** AWS EC2 (Ubuntu Instance)
 - **Containerization:** Docker (Custom Node.js Image)
-- **Web Server:** Nginx (Reverse Proxy & Load Balancing)
+- **Web Server:** Nginx (Reverse Proxy)
 - **Security & DNS:** HTTPS/SSL via Certbot (Let's Encrypt), DuckDNS
 
 ---
@@ -33,7 +33,7 @@ Going beyond a standard MERN application by utilizing a custom cloud infrastruct
 
 - **Production-Grade DevOps:** Moved beyond PaaS by manually configuring an **AWS EC2** instance with **Docker** containers for full environment isolation.
 - **Secure Networking:** Implemented **Nginx** as a reverse proxy to handle port forwarding and serve the API securely over **HTTPS (SSL/TLS)**.
-- **DDoS Protection:** integrated **Rate Limiting** middleware to restrict abusive IP traffic and prevent brute-force attacks.
+- **DDoS Protection:** Integrated **Rate Limiting** middleware to restrict abusive IP traffic and prevent brute-force attacks.
 - **Decoupled Architecture:** Frontend hosted on Vercel (CI/CD) communicating securely with the Dockerized backend on AWS.
 
 <img src="./assets/elast.png"></img>
