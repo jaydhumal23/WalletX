@@ -2,9 +2,9 @@
 
 **WalletX** is a production-grade, full-stack financial management platform designed to track income, expenses, and transaction history in real-time.
 
-Going beyond a standard MERN application, WalletX demonstrates **DevOps maturity** by utilizing a custom cloud infrastructure. The backend is containerized with **Docker**, orchestrated on **AWS EC2**, managed via **Nginx** reverse proxy, and secured with **SSL/TLS encryption (HTTPS)** using Certbot.
+Going beyond a standard MERN application by utilizing a custom cloud infrastructure. The backend is containerized with **Docker**, orchestrated on **AWS EC2**, managed via **Nginx** reverse proxy, and secured with **SSL/TLS encryption (HTTPS)** using Certbot.
 
-[![Live Demo](https://img.shields.io/badge/-Live-green?style=for-the-badge&logo=)](https://walletx-1jay.vercel.app)
+<a href="https://walletx-1jay.vercel.app" target="_blank">Live</a>
 
 ### **Frontend**
 
@@ -16,8 +16,8 @@ Going beyond a standard MERN application, WalletX demonstrates **DevOps maturity
 ### **Backend**
 
 - **Runtime:** Node.js & Express.js
-- **Database:** MongoDB (Mongoose ODM)
-- **Security:** Express-Rate-Limit, CORS, Helmet
+- **Database:** MongoDB
+- **Security:** Express-Rate-Limit, CORS
 - **API Style:** RESTful Architecture
 
 ### **DevOps & Cloud Infrastructure**
