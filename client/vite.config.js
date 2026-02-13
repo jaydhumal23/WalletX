@@ -5,10 +5,11 @@ import tailwindcss from "@tailwindcss/vite"
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
+    port: 5174,
     proxy: {
       // forward requests starting with /api to the backend
       "/api": {
-        target: "https://walletx-jay.duckdns.org/",
+        target: "https://mega-backend-eamr.onrender.com/walletx",
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path // keep /api/v1/users/register intact
