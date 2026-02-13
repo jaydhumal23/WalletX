@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // forward requests starting with /api to the backend
       "/api": {
-        target: "https://mega-backend-eamr.onrender.com/walletx",
+        target: "https://mega-backend-1jay.onrender.com/walletx",
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path // keep /api/v1/users/register intact
