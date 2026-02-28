@@ -5,6 +5,7 @@ import Spinner from "../components/Spinner";
 import { Form, Input, Button, message } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie"
+import Footer from "../components/layout/Footer";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8 max-md:mb-4">
           <h1 className="text-8xl max-md:text-[56px] font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -121,6 +122,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <Footer textColor="text-gray-500" />
     </div>
   );
 }
