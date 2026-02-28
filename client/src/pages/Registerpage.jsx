@@ -5,6 +5,7 @@ import { Form, Input, Button, message } from "antd";
 import Spinner from "../components/Spinner";
 import axios from "axios";
 import Cookies from "js-cookie"
+import Footer from "../components/layout/Footer";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md ">
         <div className="text-center mb-8 max-md:mb-4">
 
@@ -135,6 +136,7 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
+            <Footer textColor="text-gray-500" />
     </div>
   );
 }
